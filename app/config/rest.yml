@@ -1,0 +1,38 @@
+lexik_jwt_authentication:
+    private_key_path: '%jwt_private_key_path%'
+    public_key_path:  '%jwt_public_key_path%'
+    pass_phrase:      '%jwt_key_pass_phrase%'
+    token_ttl:        '%jwt_token_ttl%'
+
+fos_rest:
+    disable_csrf_role: ROLE_USER
+    view:
+        formats:
+            json: true
+            html: false
+        failed_validation: HTTP_BAD_REQUEST
+        default_engine: ~
+        view_response_listener: force
+        mime_types:
+            json: ['application/json', 'application/x-json']
+
+    param_fetcher_listener: true
+    access_denied_listener:
+        json: true
+
+    format_listener:
+        rules:
+            - { path: ^/, priorities: [ json ], fallback_format: json, prefer_extension: false }
+
+    exception:
+        codes:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
+            'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
+        messages:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': true
+            'Symfony\Component\HttpKernel\Exception\HttpException': true
+            'Symfony\Component\HttpKernel\Exception\NotFoundHttpException': true
+
+    serializer:
+        version: 1.0
+        serialize_null: true
