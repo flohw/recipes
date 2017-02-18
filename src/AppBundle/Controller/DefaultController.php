@@ -2,20 +2,26 @@
 
 namespace AppBundle\Controller;
 
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations as FOSRest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 
-class DefaultController extends Controller
+/**
+ * Class DefaultController
+ *
+ * @package AppBundle\Controller
+ */
+class DefaultController extends FOSRestController
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/")
+     *
+     * @FOSRest\View
      */
-    public function indexAction(Request $request)
+    public function getHomeAction()
     {
-        // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-        ]);
+        return [
+            'message' => 'Hello world',
+        ];
     }
 }
